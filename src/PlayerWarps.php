@@ -1,6 +1,6 @@
 <?php
 
-namespace XeonCh;
+namespace XeonCh\PlayerWarpsUI;
 
 use pocketmine\Server;
 use pocketmine\command\Command;
@@ -9,9 +9,9 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\player\Player;
 use pocketmine\event\Listener;
 use pocketmine\utils\Config;
-use XeonCh\Form\Form;
-use XeonCh\Form\SimpleForm;
-use XeonCh\Form\CustomForm;
+use XeonCh\PlayerWarpsUI\Form\Form;
+use XeonCh\PlayerWarpsUI\Form\SimpleForm;
+use XeonCh\PlayerWarpsUI\Form\CustomForm;
 use pocketmine\world\{World, Position};
 use onebone\economyapi\EconomyAPI;
 
