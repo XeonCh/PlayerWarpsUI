@@ -13,7 +13,7 @@
 # ISSUES
 
 
-• if you want to give suggestions/find errors you open an [issues](https://github.com/XeonCh/PlayerWarpsUI/issues)
+• if you want to give suggestions/find errors you open an issues
 
 
 # Config
@@ -22,7 +22,7 @@ Yaml
 
 ---
 
-```#©PREFIX MESSAGE
+```#PREFIX MESSAGE
 Prefix: "§7[§ePlayerWarps§7] "
 
 #NO PERMISSIONS CHAT
@@ -53,7 +53,3 @@ Tp-Message: "&a{PLAYER} Teleported to {pwarp}, Owner {owner}"
 ```
 
 ---
-
-# Download
-
-You can download it [here](https://poggit.pmmp.io/ci/XeonCh/PlayerWarpsUI/)
