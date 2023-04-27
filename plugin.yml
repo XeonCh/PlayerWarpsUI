@@ -1,0 +1,30 @@
+name: PlayerWarpsUI
+main: XeonCh\PlayerWarps
+version: 1.0.0
+api: 4.0.0
+author: XeonCh & Dhnz
+depend: EconomyAPI
+
+commands:
+  pwarp:
+    description: "Player warp command"
+    permission: pwarp.cmd
+permissions:
+   pwarp.cmd:
+     default: true
+     description: "Main command"
+   pwarp.create:
+     default: op
+     description: "Create pwarp"
+   pwarp.delete:
+     default: op
+     description: "Delete Pwarp"
+   pwarp.newpos:
+     default: op
+     description: "Create new pos pwarp"
+   pwarp.info:
+     default: op
+     description: "Show info pwarp"
+   pwarp.help:
+     default: true
+     description: "Show help command"
