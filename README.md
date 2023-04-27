@@ -56,4 +56,4 @@ Tp-Message: "&a{PLAYER} Teleported to {pwarp}, Owner {owner}"
 
 # Download
 
-You can download it [here](https://poggit.pmmp.io/ci/XeonCh/QuestPE/QuestPE)
+You can download it [here](https://poggit.pmmp.io/ci/XeonCh/PlayerWarpsUI/)
