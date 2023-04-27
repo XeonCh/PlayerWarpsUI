@@ -10,7 +10,7 @@
 
 - And More
 
-# FAQ
+# ISSUES
 
 
 • if you want to give suggestions/find errors you open an [issues](https://github.com/XeonCh/PlayerWarpsUI/issues)
