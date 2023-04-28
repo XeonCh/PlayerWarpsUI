@@ -15,9 +15,10 @@ use XeonCh\PlayerWarpsUI\Form\CustomForm;
 use pocketmine\world\{World, Position};
 use onebone\economyapi\EconomyAPI;
 use cooldogedev\BedrockEconomy\api\BedrockEconomyAPI;
-
+use cooldogedev\BedrockEconomy\libs\cooldogedev\libSQL\context\ClosureContext;
+use cooldogedev\BedrockEconomy\api\version\LegacyBEAPI;
 class PlayerWarps extends PluginBase implements Listener {
-    
+     
     public $dt;
 	public $error = "§l§cERROR§r ";
 	
@@ -109,7 +110,7 @@ class PlayerWarps extends PluginBase implements Listener {
 		         	break;
 		         	case "delete":
 		            case "del";
-		            case "remove";
+		            case "remove":
 		         	    if(!$sender instanceof Player){
                             return true;
                         }
