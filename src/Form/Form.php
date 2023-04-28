@@ -1,6 +1,6 @@
 <?php
 
-namespace XeonCh\Form;
+namespace XeonCh\PlayerWarpsUI\Form;
 
 use pocketmine\form\Form as IForm;
 use pocketmine\player\Player;

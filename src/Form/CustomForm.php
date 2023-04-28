@@ -1,6 +1,6 @@
 <?php
 
-namespace XeonCh\Form;
+namespace XeonCh\PlayerWarpsUI\Form;
 
 class CustomForm extends Form {
 
