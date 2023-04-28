@@ -22,7 +22,7 @@ Yaml
 
 ---
 
-```#PREFIX MESSAGE
+```yaml
 Prefix: "§7[§ePlayerWarps§7] "
 
 #NO PERMISSIONS CHAT
