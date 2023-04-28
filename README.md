@@ -4,7 +4,7 @@
 
 - Easy Config
 
-- EconomyAPI Support
+- BedrockEconomy Support
 
 - Easy Use
 
