@@ -14,6 +14,7 @@ use XeonCh\PlayerWarpsUI\Form\SimpleForm;
 use XeonCh\PlayerWarpsUI\Form\CustomForm;
 use pocketmine\world\{World, Position};
 use onebone\economyapi\EconomyAPI;
+use cooldogedev\BedrockEconomy\api\BedrockEconomyAPI;
 
 class PlayerWarps extends PluginBase implements Listener {
     
@@ -68,7 +69,14 @@ class PlayerWarps extends PluginBase implements Listener {
                             $sender->sendMessage($this->error . "§fThere is already a Player Warp with the name §e{$pwarp}");
                             return true;
                         }
-                        $playerMoney = EconomyAPI::getInstance()->myMoney($sender);;
+                        $playerMoney = BedrockEconomyAPI::legacy()->getPlayerBalance(
+    "$sender",
+    ClosureContext::create(
+        function (?int $balance): void {
+            var_dump($balance);
+        },
+    )
+);
                         if($playerMoney < $createPrice){
                             $sender->sendMessage($this->prefix . "§cYou don't have enough money to create a Player Warp! You need §a" . $createPrice . "§c to create!");
                             return true;
@@ -79,7 +87,16 @@ class PlayerWarps extends PluginBase implements Listener {
 	         	        $z = intval($sender->getPosition()->getZ());
              		    $world = $sender->getWorld()->getDisplayName();
              		    $owner = $sender->getName();
-             		    EconomyAPI::getInstance()->reduceMoney($sender, $createPrice);
+             		    BedrockEconomyAPI::legacy()->subtractFromPlayerBalance(
+    "$sender",
+    $createPrice,
+    ClosureContext::create(
+        function (bool $wasUpdated): void {
+            var_dump($wasUpdated);
+        },
+    )
+);
+             		    
              		    $this->dt->setNested("{$pwarp}.owner", $owner);
 	         		    $this->dt->setNested("{$pwarp}.x", $x);
 	        		    $this->dt->setNested("{$pwarp}.y", $y);
@@ -150,7 +167,14 @@ class PlayerWarps extends PluginBase implements Listener {
                            $sender->sendMessage($this->error . "§fYou can't cant edit this pwarp, because you not owner this warp");
                            return true;
                         }
-                        $playerMoney = EconomyAPI::getInstance()->myMoney($sender);;
+                        $playerMoney = BedrockEconomyAPI::legacy()->getPlayerBalance(
+    "$sender",
+    ClosureContext::create(
+        function (?int $balance): void {
+            var_dump($balance);
+        },
+    )
+);
                         if($playerMoney < $newPosPrice){
                             $sender->sendMessage($this->prefix . "§cYou don't have enough money to edit a Player Warp! You need §a" . $newPosPrice . "§c to edit!");
                             return true;
@@ -160,7 +184,16 @@ class PlayerWarps extends PluginBase implements Listener {
 	         		    $y = intval($sender->getPosition()->getY());
 	         	        $z = intval($sender->getPosition()->getZ());
              		    $world = $sender->getWorld()->getDisplayName();
-             		    EconomyAPI::getInstance()->reduceMoney($sender, $newPosPrice);
+             		    BedrockEconomyAPI::legacy()->subtractFromPlayerBalance(
+    "$sender",
+    $newPosPrice,
+    ClosureContext::create(
+        function (bool $wasUpdated): void {
+            var_dump($wasUpdated);
+        },
+    )
+);
+             		    
 	         		    $this->dt->setNested("{$pwarp}.x", $x);
 	        		    $this->dt->setNested("{$pwarp}.y", $y);
 	        	        $this->dt->setNested("{$pwarp}.z", $z);
