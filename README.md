@@ -1,5 +1,7 @@
 [![](https://poggit.pmmp.io/shield.state/PlayerWarpsUI)](https://poggit.pmmp.io/p/PlayerWarpsUI)
 <a href="https://poggit.pmmp.io/p/PlayerWarpsUI"><img src="https://poggit.pmmp.io/shield.state/PlayerWarpsUI"></a>
+[![](https://poggit.pmmp.io/shield.dl.total/PlayerWarpsUI)](https://poggit.pmmp.io/p/PlayerWarpsUI)
+<a href="https://poggit.pmmp.io/p/PlayerWarpsUI"><img src="https://poggit.pmmp.io/shield.dl.total/PlayerWarpsUI"></a>
 
 # Features
 
