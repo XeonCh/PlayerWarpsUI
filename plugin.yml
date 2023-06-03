@@ -1,12 +1,11 @@
 name: PlayerWarpsUI
 main: XeonCh\PlayerWarpsUI\PlayerWarps
 src-namespace-prefix: XeonCh\PlayerWarpsUI
-version: 1.0.0
-api: 4.0.0
+version: 1.2.0
+api: 5.0.0
 author: 
 - XeonCh
 - dhnnz
-depend: BedrockEconomy
 
 commands:
   pwarp:
