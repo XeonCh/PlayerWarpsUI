@@ -9,7 +9,7 @@
 
 - Easy Config
 
-- BedrockEconomy Support
+- Multi EconomyAPI Support (EconomyAPI && BedrockEconomy)
 
 - Easy Use
 
@@ -30,6 +30,13 @@ Yaml
 ```#PREFIX MESSAGE
 Prefix: "§7[§ePlayerWarps§7] "
 
+# ECONOMY PROVIDER
+# ecomomys,economyapi (EconomyAPI)
+# bedrockeconomy (BedrockEconomy)
+# xp,exp,experience (Exp)
+economy:
+  provider: economyapi
+  
 #NO PERMISSIONS CHAT
 no-permission: "§cYou dont have permission to use this command"
 
