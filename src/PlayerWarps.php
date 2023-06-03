@@ -15,9 +15,8 @@ use XeonCh\PlayerWarpsUI\Form\Form;
 use XeonCh\PlayerWarpsUI\Form\SimpleForm;
 use XeonCh\PlayerWarpsUI\Form\CustomForm;
 
-use cooldogedev\BedrockEconomy\api\BedrockEconomyAPI;
-use cooldogedev\BedrockEconomy\libs\cooldogedev\libSQL\context\ClosureContext;
-
+use XeonCh\PlayerWarpsUI\DaPigGuy\libPiggyEconomy\libPiggyEconomy;
+use XeonCh\PlayerWarpsUI\DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
 /**
  * Summary of PlayerWarps
  */
@@ -26,6 +25,9 @@ class PlayerWarps extends PluginBase implements Listener
 
     public $dt;
     public $error = "§l§cERROR§r ";
+    /** @var EconomyProvider */
+    public $economyProvider;
+
 
     public function onEnable(): void
     {
@@ -33,8 +35,18 @@ class PlayerWarps extends PluginBase implements Listener
         $this->saveDefaultConfig();
         $this->saveResource("data.yml");
         $this->dt = new Config($this->getDataFolder() . "data.yml", Config::YAML, array());
-    }
+        
+        //Economy 
+        libPiggyEconomy::init();
+        $this->economyProvider = libPiggyEconomy::getProvider($this->getConfig()->get("economy"));
 
+    }
+    
+    public function getEconomyProvider(): EconomyProvider
+    {
+        return $this->economyProvider;
+    }
+    
     /**
      * Summary of onCommand
      * @param CommandSender $sender
@@ -78,42 +90,27 @@ class PlayerWarps extends PluginBase implements Listener
                     $sender->sendMessage($this->error . "§fThere is already a Player Warp with the name §e{$pwarp}");
                     return true;
                 }
-                BedrockEconomyAPI::legacy()->getPlayerBalance(
-                    $sender->getName(),
-                    ClosureContext::create(
-                        function (?int $playerMoney) use ($sender, $createPrice, $prefix, $pwarp): void {
-                            if ($playerMoney < $createPrice) {
-                                $sender->sendMessage($prefix . "§cYou don't have enough money to create a Player Warp! You need §a" . $createPrice . "§c to create!");
-                                return;
-                            }
-
-                            BedrockEconomyAPI::legacy()->subtractFromPlayerBalance(
-                                $sender->getName(),
-                                $createPrice,
-                                ClosureContext::create(
-                                    function (bool $wasUpdated) use ($sender, $createPrice, $prefix, $pwarp): void {
-                                                if ($wasUpdated) {
-                                                    $x = intval($sender->getPosition()->getX());
-                                                    $y = intval($sender->getPosition()->getY());
-                                                    $z = intval($sender->getPosition()->getZ());
-                                                    $world = $sender->getWorld()->getDisplayName();
-                                                    $owner = $sender->getName();
-                                                    $this->dt->setNested("{$pwarp}.owner", $owner);
-                                                    $this->dt->setNested("{$pwarp}.x", $x);
-                                                    $this->dt->setNested("{$pwarp}.y", $y);
-                                                    $this->dt->setNested("{$pwarp}.z", $z);
-                                                    $this->dt->setNested("{$pwarp}.world", $world);
-                                                    $this->dt->save();
-                                                    $this->dt->reload();
-                                                    $sender->sendMessage($prefix . "§fPlayer Warp §e{$pwarp}§f Succees Created!");
-                                                    $sender->sendMessage("§c- {$createPrice}");
-                                                }
-                                            },
-                                )
-                            );
-                        },
-                    )
-                );
+                $this->getEconomyProvider()->getMoney($sender, function (float|int $balance) use ($args, $createPrice, $sender, $newPosPrice) {
+                    if ($balance < $createPrice){
+                        $sender->sendMessage($prefix . "§cYou don't have enough money to create a Player Warp! You need §a" . $createPrice . "§c to create!");
+                        return true;
+                    }
+                });
+                $x = intval($sender->getPosition()->getX());
+                $y = intval($sender->getPosition()->getY());
+                $z = intval($sender->getPosition()->getZ());
+                $world = $sender->getWorld()->getDisplayName();
+                $owner = $sender->getName();
+                $this->dt->setNested("{$pwarp}.owner", $owner);
+                $this->dt->setNested("{$pwarp}.x", $x);
+                $this->dt->setNested("{$pwarp}.y", $y);
+                $this->dt->setNested("{$pwarp}.z", $z);
+                $this->dt->setNested("{$pwarp}.world", $world);
+                $this->dt->save();
+                $this->dt->reload();
+                $this->getEconomyProvider()->takeMoney($sender, $createPrice);
+                $sender->sendMessage($prefix . "§fPlayer Warp §e{$pwarp}§f Succees Created!");
+                $sender->sendMessage("§c- {$createPrice}");
                 break;
             case "delete":
             case "del";
@@ -166,39 +163,26 @@ class PlayerWarps extends PluginBase implements Listener
                     $sender->sendMessage($this->error . "§fYou can't cant edit this pwarp, because you not owner this warp");
                     return true;
                 }
-                BedrockEconomyAPI::legacy()->getPlayerBalance(
-                    $sender->getName(),
-                    ClosureContext::create(
-                        function (?int $playerMoney) use ($sender, $newPosPrice, $prefix, $pwarp): void {
-                            if ($playerMoney < $newPosPrice) {
-                                $sender->sendMessage($prefix . "§cYou don't have enough money to edit a Player Warp! You need §a" . $newPosPrice . "§c to edit!");
-                                return;
-                            }
-                            BedrockEconomyAPI::legacy()->subtractFromPlayerBalance(
-                                $sender->getName(),
-                                $newPosPrice,
-                                ClosureContext::create(
-                                    function (bool $wasUpdated) use ($sender, $newPosPrice, $prefix, $pwarp): void {
-                                                if ($wasUpdated) {
-                                                    $x = intval($sender->getPosition()->getX());
-                                                    $y = intval($sender->getPosition()->getY());
-                                                    $z = intval($sender->getPosition()->getZ());
-                                                    $world = $sender->getWorld()->getDisplayName();
-                                                    $this->dt->setNested("{$pwarp}.x", $x);
-                                                    $this->dt->setNested("{$pwarp}.y", $y);
-                                                    $this->dt->setNested("{$pwarp}.z", $z);
-                                                    $this->dt->setNested("{$pwarp}.world", $world);
-                                                    $this->dt->save();
-                                                    $this->dt->reload();
-                                                    $sender->sendMessage($prefix . "§fPlayer Warp §e{$pwarp}§f new position has been set!");
-                                                    $sender->sendMessage("§c- {$newPosPrice}");
-                                                }
-                                            },
-                                )
-                            );
-                        },
-                    )
-                );
+                $this->getEconomyProvider()->getMoney($sender, function (float|int $balance) use ($args, $createPrice, $sender, $newPosPrice) {
+                    if ($balance < $newPosPrice){
+                        $sender->sendMessage($prefix . "§cYou don't have enough money to edit New Pos a Player Warp! You need §a" . $newPosPrice . "§c to edit!");
+                        return true;
+                    }
+                });
+                $pwarp = $args[1];
+                $x = intval($sender->getPosition()->getX());
+	            $y = intval($sender->getPosition()->getY());
+	         	$z = intval($sender->getPosition()->getZ());
+             	$world = $sender->getWorld()->getDisplayName();
+	         	$this->dt->setNested("{$pwarp}.x", $x);
+	        	$this->dt->setNested("{$pwarp}.y", $y);
+	        	$this->dt->setNested("{$pwarp}.z", $z);
+        		$this->dt->setNested("{$pwarp}.world", $world);
+	        	$this->dt->save();
+	            $this->dt->reload();
+	            $this->getEconomyProvider()->takeMoney($sender, $newPosPrice);
+	         	$sender->sendMessage($prefix . "§fPlayer Warp §e{$pwarp}§f new position has been set!");
+	         	$sender->sendMessage("§c- {$newPosPrice}");
                 break;
             case "info":
                 if (!$sender instanceof Player) {
@@ -237,7 +221,7 @@ class PlayerWarps extends PluginBase implements Listener
                 $sender->sendMessage("-----§bPWARP HELP§r-----");
                 $sender->sendMessage("§f/pwarp <set,create,add> <warpName>§7 - §fCreate Player Warp");
                 $sender->sendMessage("§f/pwarp <delete,del,remove> <warpName>§7 - §fDelete Player Warp");
-                $sender->sendMessage("§f/pwarp <newpos,new,edit> <warpName>§7 - §fEdit new posotion Player Warp");
+                $sender->sendMessage("§f/pwarp <newpos,new,edit> <warpName>§7 - §fEdit new position Player Warp");
                 $sender->sendMessage("§f/pwarp <info> <warpMame>§7 - §fShow information player warp");
                 $sender->sendMessage("§f/pwarp menu§7 - §fOpen Player Warp Menu");
                 $sender->sendMessage("§f/pwarp help§7 - §fPwarp help command");
@@ -245,6 +229,9 @@ class PlayerWarps extends PluginBase implements Listener
                 break;
             case "menu":
                 $this->pwarpMenu($sender);
+                break;
+            default:
+                $sender->sendMessage("§l§cUsage: §r§a/pwarp <help>");
                 break;
         }
         return true;
