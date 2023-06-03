@@ -9,7 +9,7 @@
 
 - Easy Config
 
-- Multi EconomyAPI Support (EconomyAPI && BedrockEconomy)
+- Multi Economy Support (EconomyAPI && BedrockEconomy)
 
 - Easy Use
 
