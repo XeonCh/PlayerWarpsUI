@@ -91,7 +91,7 @@ class PlayerWarps extends PluginBase implements Listener
                     $sender->sendMessage($this->error . "§fThere is already a Player Warp with the name §e{$pwarp}");
                     return true;
                 }
-                $this->getEconomyProvider()->getMoney($sender, function (float|int $balance) use ($createPrice, $sender, $newPosPrice, $prefix) {
+                $this->getEconomyProvider()->getMoney($sender, function (float|int $balance) use ($createPrice, $sender, $prefix) {
                     if ($balance < $createPrice) {
                         $sender->sendMessage($prefix . "§cYou don't have enough money to create a Player Warp! You need §a" . $createPrice . "§c to create!");
                         return true;
@@ -164,7 +164,7 @@ class PlayerWarps extends PluginBase implements Listener
                     $sender->sendMessage($this->error . "§fYou can't cant edit this pwarp, because you not owner this warp");
                     return true;
                 }
-                $this->getEconomyProvider()->getMoney($sender, function (float|int $balance) use ($createPrice, $sender, $newPosPrice, $prefix) {
+                $this->getEconomyProvider()->getMoney($sender, function (float|int $balance) use ($sender, $newPosPrice, $prefix) {
                     if ($balance < $newPosPrice) {
                         $sender->sendMessage($prefix . "§cYou don't have enough money to edit New Pos a Player Warp! You need §a" . $newPosPrice . "§c to edit!");
                         return true;
