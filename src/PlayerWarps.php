@@ -17,6 +17,7 @@ use XeonCh\PlayerWarpsUI\Form\CustomForm;
 
 use XeonCh\PlayerWarpsUI\DaPigGuy\libPiggyEconomy\libPiggyEconomy;
 use XeonCh\PlayerWarpsUI\DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
+
 /**
  * Summary of PlayerWarps
  */
@@ -35,18 +36,18 @@ class PlayerWarps extends PluginBase implements Listener
         $this->saveDefaultConfig();
         $this->saveResource("data.yml");
         $this->dt = new Config($this->getDataFolder() . "data.yml", Config::YAML, array());
-        
+
         //Economy 
         libPiggyEconomy::init();
         $this->economyProvider = libPiggyEconomy::getProvider($this->getConfig()->get("economy"));
 
     }
-    
+
     public function getEconomyProvider(): EconomyProvider
     {
         return $this->economyProvider;
     }
-    
+
     /**
      * Summary of onCommand
      * @param CommandSender $sender
@@ -90,8 +91,8 @@ class PlayerWarps extends PluginBase implements Listener
                     $sender->sendMessage($this->error . "§fThere is already a Player Warp with the name §e{$pwarp}");
                     return true;
                 }
-                $this->getEconomyProvider()->getMoney($sender, function (float|int $balance) use ($args, $createPrice, $sender, $newPosPrice) {
-                    if ($balance < $createPrice){
+                $this->getEconomyProvider()->getMoney($sender, function (float|int $balance) use ($createPrice, $sender, $newPosPrice, $prefix) {
+                    if ($balance < $createPrice) {
                         $sender->sendMessage($prefix . "§cYou don't have enough money to create a Player Warp! You need §a" . $createPrice . "§c to create!");
                         return true;
                     }
@@ -163,26 +164,26 @@ class PlayerWarps extends PluginBase implements Listener
                     $sender->sendMessage($this->error . "§fYou can't cant edit this pwarp, because you not owner this warp");
                     return true;
                 }
-                $this->getEconomyProvider()->getMoney($sender, function (float|int $balance) use ($args, $createPrice, $sender, $newPosPrice) {
-                    if ($balance < $newPosPrice){
+                $this->getEconomyProvider()->getMoney($sender, function (float|int $balance) use ($createPrice, $sender, $newPosPrice, $prefix) {
+                    if ($balance < $newPosPrice) {
                         $sender->sendMessage($prefix . "§cYou don't have enough money to edit New Pos a Player Warp! You need §a" . $newPosPrice . "§c to edit!");
                         return true;
                     }
                 });
                 $pwarp = $args[1];
                 $x = intval($sender->getPosition()->getX());
-	            $y = intval($sender->getPosition()->getY());
-	         	$z = intval($sender->getPosition()->getZ());
-             	$world = $sender->getWorld()->getDisplayName();
-	         	$this->dt->setNested("{$pwarp}.x", $x);
-	        	$this->dt->setNested("{$pwarp}.y", $y);
-	        	$this->dt->setNested("{$pwarp}.z", $z);
-        		$this->dt->setNested("{$pwarp}.world", $world);
-	        	$this->dt->save();
-	            $this->dt->reload();
-	            $this->getEconomyProvider()->takeMoney($sender, $newPosPrice);
-	         	$sender->sendMessage($prefix . "§fPlayer Warp §e{$pwarp}§f new position has been set!");
-	         	$sender->sendMessage("§c- {$newPosPrice}");
+                $y = intval($sender->getPosition()->getY());
+                $z = intval($sender->getPosition()->getZ());
+                $world = $sender->getWorld()->getDisplayName();
+                $this->dt->setNested("{$pwarp}.x", $x);
+                $this->dt->setNested("{$pwarp}.y", $y);
+                $this->dt->setNested("{$pwarp}.z", $z);
+                $this->dt->setNested("{$pwarp}.world", $world);
+                $this->dt->save();
+                $this->dt->reload();
+                $this->getEconomyProvider()->takeMoney($sender, $newPosPrice);
+                $sender->sendMessage($prefix . "§fPlayer Warp §e{$pwarp}§f new position has been set!");
+                $sender->sendMessage("§c- {$newPosPrice}");
                 break;
             case "info":
                 if (!$sender instanceof Player) {
