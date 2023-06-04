@@ -6,6 +6,9 @@ api: 5.0.0
 author: 
 - XeonCh
 - dhnnz
+softdepend:
+  - EconomyAPI
+  - BedrockEconomy
 
 commands:
   pwarp:
