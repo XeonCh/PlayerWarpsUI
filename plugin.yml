@@ -7,7 +7,6 @@ author:
 - XeonCh
 - dhnnz
 softdepend:
-  - EconomyAPI
   - BedrockEconomy
 
 commands:
