@@ -23,7 +23,7 @@ Prefix: "§7[§ePlayerWarps§7] "
 # bedrockeconomy (BedrockEconomy)
 # xp,exp,experience (Exp)
 economy:
-  provider: economyapi
+  provider: economys
   
 #NO PERMISSIONS CHAT
 no-permission: "§cYou dont have permission to use this command"
