@@ -2,7 +2,8 @@
 
 namespace XeonCh\PlayerWarpsUI;
 
-use pocketmine\Server;
+use DaPigGuy\libPiggyEconomy\libPiggyEconomy;
+use DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginBase;
@@ -14,9 +15,6 @@ use pocketmine\world\{World, Position};
 use XeonCh\PlayerWarpsUI\Form\Form;
 use XeonCh\PlayerWarpsUI\Form\SimpleForm;
 use XeonCh\PlayerWarpsUI\Form\CustomForm;
-
-use XeonCh\PlayerWarpsUI\DaPigGuy\libPiggyEconomy\libPiggyEconomy;
-use XeonCh\PlayerWarpsUI\DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
 
 /**
  * Summary of PlayerWarps
@@ -40,7 +38,6 @@ class PlayerWarps extends PluginBase implements Listener
         //Economy 
         libPiggyEconomy::init();
         $this->economyProvider = libPiggyEconomy::getProvider($this->getConfig()->get("economy"));
-
     }
 
     public function getEconomyProvider(): EconomyProvider
@@ -65,6 +62,7 @@ class PlayerWarps extends PluginBase implements Listener
             return true;
         }
         if (!isset($args[0])) {
+            $this->pwarpMenu($sender);
             $sender->sendMessage("§l§cUsage: §r§a/pwarp <help>");
             return true;
         }
@@ -86,7 +84,7 @@ class PlayerWarps extends PluginBase implements Listener
                     $sender->sendMessage("§l§cUsage: §r§a/pwarp {$args[0]} <nameWarp>");
                     return true;
                 }
-                $pwarp = $args[1];
+                $pwarp = explode(".", $args[1])[0];
                 if ($this->dt->exists($pwarp)) {
                     $sender->sendMessage($this->error . "§fThere is already a Player Warp with the name §e{$pwarp}");
                     return true;
@@ -110,7 +108,7 @@ class PlayerWarps extends PluginBase implements Listener
                 $this->dt->save();
                 $this->dt->reload();
                 $this->getEconomyProvider()->takeMoney($sender, $createPrice);
-                $sender->sendMessage($prefix . "§fPlayer Warp §e{$pwarp}§f Succees Created!");
+                $sender->sendMessage($prefix . "§fPlayer Warp §e{$pwarp}§f Success Created!");
                 $sender->sendMessage("§c- {$createPrice}");
                 break;
             case "delete":
@@ -271,8 +269,19 @@ class PlayerWarps extends PluginBase implements Listener
         $form->setContent($this->getConfig()->get("menu")["content"]);
 
         foreach ($this->dt->getAll() as $warp => $dataWarp) {
-            $owner = $dataWarp["owner"];
-            $form->addButton("§b{$warp}\n§f{$owner}", 0, "textures/ui/FriendsIcon", $warp);
+            $owner = isset($dataWarp["owner"]) ? $dataWarp["owner"] : "UNKNOWN";
+            $txt = str_replace(
+                ["{OWNER}", "{WARP}", "&"],
+                [$owner, $warp, "§"],
+                $this->getConfig()->getNested("menu.text")
+            );
+            $imageType = (int) $this->getConfig()->getNested("menu.image-type");
+            $imagePath = $this->getConfig()->getNested("menu.image-path");
+            if ($imageType == 0) {
+                $form->addButton($txt, 0, $imagePath, $warp);
+            } else if ($imageType == 1) {
+                $form->addButton($txt, 1, $imagePath, $warp);
+            }
         }
 
         $form->sendToPlayer($sender);
