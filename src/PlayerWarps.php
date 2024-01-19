@@ -3,7 +3,6 @@
 namespace XeonCh\PlayerWarpsUI;
 
 use DaPigGuy\libPiggyEconomy\libPiggyEconomy;
-use DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginBase;
@@ -24,9 +23,7 @@ class PlayerWarps extends PluginBase implements Listener
 
     public $dt;
     public $error = "§l§cERROR§r ";
-    /** @var EconomyProvider */
     public $economyProvider;
-
 
     public function onEnable(): void
     {
@@ -40,7 +37,7 @@ class PlayerWarps extends PluginBase implements Listener
         $this->economyProvider = libPiggyEconomy::getProvider($this->getConfig()->get("economy"));
     }
 
-    public function getEconomyProvider(): EconomyProvider
+    public function getEconomyProvider()
     {
         return $this->economyProvider;
     }
