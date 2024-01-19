@@ -27,14 +27,12 @@ class PlayerWarps extends PluginBase implements Listener
 
     public function onEnable(): void
     {
-        $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->saveDefaultConfig();
-        $this->saveResource("data.yml");
-        $this->dt = new Config($this->getDataFolder() . "data.yml", Config::YAML, array());
-
-        //Economy 
         libPiggyEconomy::init();
         $this->economyProvider = libPiggyEconomy::getProvider($this->getConfig()->get("economy"));
+        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $this->saveResource("data.yml");
+        $this->dt = new Config($this->getDataFolder() . "data.yml", Config::YAML, array());
     }
 
     public function getEconomyProvider()
