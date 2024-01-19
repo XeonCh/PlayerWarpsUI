@@ -6,7 +6,7 @@ api: 5.0.0
 author: 
 - XeonCh
 - dhnnz
-virions: libPiggyEconomy
+virions: ["libPiggyEconomy"]
 
 commands:
   pwarp:
