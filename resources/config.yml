@@ -34,11 +34,17 @@ price:
   create: "100"
   newpos: "100"
   
-#MENU CONFIG
+# MENU CONFIG
+#  {pwarp} = Namme pwarp
+#  {owner} = Name Owner Pwarp
+#  AND USE & FOR COLORONG
 menu:
   title: "§ePlayer Warp"
   content: "Player Warp Menu by Xeon"
-  
+  text: "&b{WARP}\n&f{OWNER}"
+  image-type: 0 #IF YOU DON'T UNDERSTAND IT, DON'T CHANGE IT
+  image-path: "textures/ui/FriendsIcon"
+
 #################################
 #  {PLAYER} = Get Name Player
 #  {pwarp} = Namme pwarp
