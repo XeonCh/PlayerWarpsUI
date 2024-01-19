@@ -4,6 +4,8 @@ branches:
 - main
 projects:
   PlayerWarpsUI:
-    icon: icon.png
     path: ""
+    icon: icon.png
+    - src: DaPigGuy/libPiggyEconomy/libPiggyEconomy
+       version: ^3.0.2
 ...
