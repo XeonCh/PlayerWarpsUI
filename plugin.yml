@@ -1,33 +1,33 @@
 name: PlayerWarpsUI
 main: XeonCh\PlayerWarpsUI\PlayerWarps
 src-namespace-prefix: XeonCh\PlayerWarpsUI
-version: 1.1.0
+version: 1.2.0
 api: 5.0.0
 author: 
 - XeonCh
 - dhnnz
-softdepend:
-  - BedrockEconomy
+virions: libPiggyEconomy
 
 commands:
   pwarp:
     description: "Player warp command"
     permission: playerwarpsui.pwarp.cmd
+
 permissions:
    playerwarpsui.pwarp.cmd:
      default: true
      description: "Main command"
    playerwarpsui.pwarp.create:
-     default: op
+     default: true
      description: "Create pwarp"
    playerwarpsui.pwarp.delete:
-     default: op
+     default: true
      description: "Delete Pwarp"
    playerwarpsui.pwarp.newpos:
-     default: op
+     default: true
      description: "Create new pos pwarp"
    playerwarpsui.pwarp.info:
-     default: op
+     default: true
      description: "Show info pwarp"
    playerwarpsui.pwarp.help:
      default: true
